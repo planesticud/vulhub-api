@@ -1,0 +1,27 @@
+version: '3'
+networks:
+ dev_planestic:
+
+services:
+  vulhub:
+     build: .
+     container_name: vulhub
+     restart: on-failure
+     env_file:
+        - .env
+     volumes:
+        - "$PWD/files:/usr/src/app/files"
+     networks:
+        - dev_planestic
+     labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vulhub.rule=Host(`desarrollo.planestic.udistrital.edu.co`) && PathPrefix(`/vulhub`)"
+      - "traefik.http.routers.vulhub.middlewares=vulhub-stripprefix"
+      - "traefik.http.middlewares.vulhub-stripprefix.stripprefix.prefixes=/vulhub"
+      - "traefik.http.routers.vulhub.tls=true"
+      - "traefik.http.routers.vulhub.tls.certresolver=le"
+      - "traefik.http.services.vulhub.loadbalancer.server.port=3000"  
+          
+networks:
+  dev_planestic:
+    external: true
