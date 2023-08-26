@@ -15,9 +15,9 @@ services:
         - dev_planestic
      labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.vulhub.rule=Host(`desarrollo.planestic.udistrital.edu.co`) && PathPrefix(`/vulhub`)"
+      - "traefik.http.routers.vulhub.rule=Host(`desarrollo.planestic.udistrital.edu.co`) && PathPrefix(`/vulhubapi`)"
       - "traefik.http.routers.vulhub.middlewares=vulhub-stripprefix"
-      - "traefik.http.middlewares.vulhub-stripprefix.stripprefix.prefixes=/vulhub"
+      - "traefik.http.middlewares.vulhub-stripprefix.stripprefix.prefixes=/vulhubapi"
       - "traefik.http.routers.vulhub.tls=true"
       - "traefik.http.routers.vulhub.tls.certresolver=le"
       - "traefik.http.services.vulhub.loadbalancer.server.port=3000"  
