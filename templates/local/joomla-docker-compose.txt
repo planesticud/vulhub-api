@@ -1,35 +1,34 @@
 version: '2'
 name: {{name}}
 services:
- wordpress-vulhub-{{name}}:
-   image: vulhub/wordpress:4.6
-   container_name: wordpress-vulhub-{{name}}
+ joomla-vulhub-{{name}}:
+   image: vulhub/joomla:4.2.7
+   container_name: joomla-vulhub-{{name}}
    working_dir: /var/www/html/{{name}}
    depends_on:
     - mysql-vulhub-{{name}}
    environment: 
-    - WORDPRESS_DB_HOST=mysql-vulhub-{{name}}:3306
-    - WORDPRESS_DB_USER=root
-    - WORDPRESS_DB_PASSWORD=root
-    - WORDPRESS_DB_NAME=wordpress
-   volumes:
-    - "$PWD/html:/var/www/html/{{name}}"
+    - JOOMLA_DB_HOST=mysql-vulhub-{{name}}
+    - JOOMLA_DB_PORT=3306
+    - JOOMLA_DB_USER=root
+    - JOOMLA_DB_PASSWORD=vulhub
+    - JOOMLA_DB_NAME=joomla
    labels:
     - "traefik.enable=true"
     - "traefik.http.routers.{{name}}.rule=Host(`desarrollo.planestic.udistrital.edu.co`) && PathPrefix(`/{{name}}`)"
     - "traefik.http.routers.{{name}}.tls=true"
     - "traefik.http.routers.{{name}}.entrypoints=websecure"
     - "traefik.http.routers.{{name}}.tls.certresolver=le"
-    - "traefik.http.services.{{name}}.loadbalancer.server.port=80"   
+    - "traefik.http.services.{{name}}.loadbalancer.server.port=80"  
    networks:
-      - "dev_planestic"
+    - "dev_planestic" 
  mysql-vulhub-{{name}}:
-   image: mysql:5
+   image: mysql:5.7
    container_name: mysql-vulhub-{{name}}
    environment: 
-    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ROOT_PASSWORD=vulhub
    networks:
-    - "dev_planestic"
+    - "dev_planestic" 
 networks:
     dev_planestic:
         external: true
